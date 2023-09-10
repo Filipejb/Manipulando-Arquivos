@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Estrutura para representar um aluno
+struct Aluno {
+    char nome[100];
+    float nota1;
+    float nota2;
+};
+
+int main() {
+    FILE *entrada = fopen("DadosEntrada.csv", "r");
+    if (entrada == NULL) {
+        printf("Erro ao abrir o arquivo de entrada.\n");
+        return 1;
+    }
+
+    FILE *saida = fopen("SituacaoFinal.csv", "w");
+    if (saida == NULL) {
+        printf("Erro ao abrir o arquivo de saída.\n");
+        fclose(entrada);
+        return 1;
+    }
+
+    fprintf(saida, "Nome do Aluno,Nota Média,Situação\n");
+
+    char linha[256];
+    char *token;
+    while (fgets(linha, sizeof(linha), entrada) != NULL) {
+        struct Aluno aluno;
+        token = strtok(linha, ",");
+        strncpy(aluno.nome, token, sizeof(aluno.nome));
+        aluno.nome[sizeof(aluno.nome) - 1] = '\0';  // Garantir que o nome termine com NULL
+        aluno.nota1 = atof(strtok(NULL, ","));
+        aluno.nota2 = atof(strtok(NULL, ","));
+
+        float media = (aluno.nota1 + aluno.nota2) / 2; // Corrigido para usar a média corretamente
+        const char *situacao = (media >= 7) ? "APROVADO" : "REPROVADO";
+
+        fprintf(saida, "%s,%.2f,%s\n", aluno.nome, media, situacao);
+    }
+
+    fclose(entrada);
+    fclose(saida);
+
+    printf("Dados escritos em SituacaoFinal.csv\n");
+    return 0;
+}
