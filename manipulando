@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Estrutura para representar um aluno
+
 struct Aluno {
     char nome[100];
     float nota1;
@@ -31,11 +31,11 @@ int main() {
         struct Aluno aluno;
         token = strtok(linha, ",");
         strncpy(aluno.nome, token, sizeof(aluno.nome));
-        aluno.nome[sizeof(aluno.nome) - 1] = '\0';  // Garantir que o nome termine com NULL
+        aluno.nome[sizeof(aluno.nome) - 1] = '\0';  
         aluno.nota1 = atof(strtok(NULL, ","));
         aluno.nota2 = atof(strtok(NULL, ","));
 
-        float media = (aluno.nota1 + aluno.nota2) / 2; // Corrigido para usar a média corretamente
+        float media = (aluno.nota1 + aluno.nota2) / 2; 
         const char *situacao = (media >= 7) ? "APROVADO" : "REPROVADO";
 
         fprintf(saida, "%s,%.2f,%s\n", aluno.nome, media, situacao);
